@@ -1,0 +1,20 @@
+{
+  "name": "comp2537-assn1-lebl-jacob",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "Jacob Lebl",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "dotenv": "^16.5.0",
+    "nodemon": "^3.1.10"
+  }
+}
