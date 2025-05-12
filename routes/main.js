@@ -8,10 +8,16 @@ const __dirname = path.dirname(path.dirname(__filename)); // Navigate up to the 
 
 router.get('/', (req, res) => {
     if (req.session.authenticated) {
-        res.send(`<h1>Hello, ${req.session.name}</h1><br><a href="/members">Members area</a>
-            <br><a href="/logout">Logout</a>`);
+        res.render('index', {
+            title: 'Home',
+            name: req.session.name,
+            authenticated: req.session.authenticated
+        });
     } else {
-        res.sendFile('index.html', { root: path.join(__dirname, 'public') });
+        res.render('index', {
+            title: 'Home',
+            authenticated: req.session.authenticated
+        });
     }
 });
 

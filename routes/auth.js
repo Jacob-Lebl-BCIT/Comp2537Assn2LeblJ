@@ -15,7 +15,7 @@ router.get('/signup', (req, res) => {
     if (req.session.authenticated) {
         return res.redirect('/members');
     } else {
-        res.sendFile('signup.html', { root: path.join(__dirname, 'public') });
+        res.render('signup', { title: 'Sign Up', messages: req.flash('error') });
     }
 });
 
@@ -28,21 +28,21 @@ router.post('/signupSubmit', async (req, res) => {
     if (!password) missingFields.push('password');
 
     if (missingFields.length > 0) {
-        return res.status(400).send(`Missing fields: ${missingFields.join(', ')}
-         <br><br> <a href="/signup">Try again</a>`);
+        req.flash('error', `Missing fields: ${missingFields.join(', ')}`);
+        return res.redirect('/signup');
     }
 
     const validationResult = signupSchema.validate({ name, email, password });
     if (validationResult.error) {
-        return res.status(400).send(`Validation error: ${validationResult.error.details[0].message}
-         <br><br> <a href="/signup">Try again</a>`);
+        req.flash('error', `Validation error: ${validationResult.error.details[0].message}`);
+        return res.redirect('/signup');
     }
 
     try {
         const existingUser = await User.findOne({ email: email });
         if (existingUser) {
-            return res.status(400).send(`Email already in use
-             <br><br> <a href="/signup">Try again</a>`);
+            req.flash('error', 'Email already in use');
+            return res.redirect('/signup');
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -59,7 +59,8 @@ router.post('/signupSubmit', async (req, res) => {
         res.redirect('/members');
     } catch (error) {
         console.error("Error during signup:", error);
-        res.status(500).send("An internal server error occurred. Please try again later.");
+        req.flash('error', 'An internal server error occurred. Please try again later.');
+        res.redirect('/signup');
     }
 });
 
@@ -67,7 +68,7 @@ router.get('/login', (req, res) => {
     if (req.session.authenticated) {
         return res.redirect('/members');
     } else {
-        res.sendFile('login.html', { root: path.join(__dirname, 'public') });
+        res.render('login', { title: 'Log In', messages: req.flash('error') });
     }
 });
 
@@ -76,15 +77,15 @@ router.post('/loginSubmit', async (req, res) => {
 
     const validationResult = loginSchema.validate({ email, password });
     if (validationResult.error) {
-        return res.status(400).send(`Validation error: ${validationResult.error.details[0].message}
-         <br><br> <a href="/login">Try again</a>`);
+        req.flash('error', `Validation error: ${validationResult.error.details[0].message}`);
+        return res.redirect('/login');
     }
 
     try {
         const user = await User.findOne({ email: email });
         if (!user) {
-            return res.status(401).send(`Invalid email or password
-             <br><br> <a href="/login">Try again</a>`);
+            req.flash('error', 'Invalid email or password');
+            return res.redirect('/login');
         }
 
         const passwordMatch = await bcrypt.compare(password, user.password);
@@ -98,12 +99,13 @@ router.post('/loginSubmit', async (req, res) => {
             console.log("User logged in:", user);
             res.redirect('/members');
         } else {
-            return res.status(401).send(`Invalid email or password
-             <br><br> <a href="/login">Try again</a>`);
+            req.flash('error', 'Invalid email or password');
+            return res.redirect('/login');
         }
     } catch (error) {
         console.error("login error:", error);
-        res.status(500).send("Something went wrong during login.");
+        req.flash('error', 'Something went wrong during login.');
+        res.redirect('/login');
     }
 });
 

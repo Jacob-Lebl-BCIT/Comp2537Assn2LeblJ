@@ -2,6 +2,7 @@ import express from 'express';
 import 'dotenv/config';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import flash from 'connect-flash'; // Import connect-flash
 
 // Config imports
 import connectDB from './config/database.js';
@@ -21,19 +22,29 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const port = process.env.PORT || 8000;
 
+// Set EJS as view engine
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views')); // Set views directory
+
 // Connect to MongoDB
 connectDB();
 
 // Middleware
 app.use(express.urlencoded({ extended: false })); // Parse form data
-// app.use(express.static(path.join(__dirname, 'public'))); // Serve static files
+app.use(express.static(path.join(__dirname, 'public'))); // Serve static files
 app.use(sessionMiddleware); // Session middleware
+app.use(flash()); // Use connect-flash middleware
+
+// Middleware to make flash messages available in templates
+app.use((req, res, next) => {
+    res.locals.messages = req.flash();
+    next();
+});
 
 // Routes
 app.use('/', mainRoutes);
 app.use('/', authRoutes);
 app.use('/', membersRoutes);
-
 
 // 404 handle
 app.use((req, res) => {

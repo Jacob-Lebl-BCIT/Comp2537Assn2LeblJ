@@ -1,0 +1,26 @@
+<%- include('partials/header', {title: 'Sign Up'}) %>
+
+<div class="mt-5">
+    <h1>Create User</h1>
+    <form action="/signupSubmit" method="post">
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" id="name" name="name" class="form-control" placeholder="name">
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <input name="email" type="email" class="form-control" id="email" placeholder="name@example.com">
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input name="password" type="password" class="form-control" id="password" placeholder="password">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <br>
+    <% if (typeof messages !== 'undefined' && messages.error) { %>
+        <div id="errorMessage" class="alert alert-danger"><%= messages.error %></div>
+    <% } %>
+</div>
+
+<%- include('partials/footer') %>
