@@ -16,14 +16,14 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const port = process.env.PORT || 8000;
 
-const mongoURI = process.env.MONGO_URI;
+const mongoURI = process.env.MONGO_URI; // ===== STORED IN .env FILE ======
 const TTL = 60 * 60; // 1 hour
 
 
 
 try {
     const db = await mongoose.connect(mongoURI, {
-        dbName: 'assn1'
+        dbName: 'assn2'
     });
     console.log('MongoDB connected successfully');
 } catch (error) {
@@ -61,11 +61,12 @@ function ensureLoggedIn(req, res, next) {
 const sessionStore = MongoStore.create({
     mongoUrl: mongoURI,
     collectionName: 'sessions', // Changed from 'assn1' to 'sessions'
+    dbName: 'assn2',
     ttl: TTL,
     autoRemove: 'native',
     crypto: {
         secret: process.env.SESSION_SECRET
-    }
+    },
 });
 
 
@@ -98,8 +99,12 @@ app.get('/', (req, res) => {
 // signup route
 
 app.get('/signup', (req, res) => {
-
+    if (req.session.authenticated) {
+        return res.redirect('/members');
+    } else {
     res.sendFile('public/signup.html', {root: __dirname});
+    }
+
 
 });
 
@@ -161,7 +166,11 @@ app.post('/signupSubmit', async (req, res) => {
 
 // login routes
 app.get('/login', (req, res) => {
+    if (req.session.authenticated) {
+        return res.redirect('/members');
+    } else {
     res.sendFile('public/login.html', {root: __dirname});
+    }
 });
 
 app.post('/loginSubmit', async (req, res) => {
@@ -232,7 +241,7 @@ app.get('/members', ensureLoggedIn, (req, res) => {
 
 app.get('/logout', (req, res) => {
 
-    req.session.destroy(err => {
+    req.session.destroy(err => { // ==================== END SESSION ==================== (large comment to easily find during demo)
         if (err) {
             console.error("Error destroying session:", err);
             return res.status(500).send("couldnt log out");
