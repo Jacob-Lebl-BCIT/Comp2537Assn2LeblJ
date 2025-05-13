@@ -15,6 +15,7 @@ import { ensureLoggedIn } from './middleware/auth.js';
 import mainRoutes from './routes/main.js';
 import authRoutes from './routes/auth.js';
 import membersRoutes from './routes/members.js';
+import adminRoutes from './routes/admin.js'; // Import admin routes
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -45,6 +46,7 @@ app.use((req, res, next) => {
 app.use('/', mainRoutes);
 app.use('/', authRoutes);
 app.use('/', membersRoutes);
+app.use('/', adminRoutes); // Use admin routes
 
 // 404 handle
 app.use((req, res) => {

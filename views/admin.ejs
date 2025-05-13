@@ -1,0 +1,44 @@
+<%- include('partials/header', {title: 'Admin Panel'}) %>
+
+<div class="container mt-5">
+    <h1>Admin Panel</h1>
+
+    <% if (typeof messages !== 'undefined' && messages.error && messages.error.length > 0) { %>
+        <div class="alert alert-danger">
+            <% messages.error.forEach(function(error) { %>
+                <p class="mb-0"><%= error %></p>
+            <% }); %>
+        </div>
+    <% } %>
+
+    <h2>Users</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% users.forEach(user => { %>
+                <tr>
+                    <td><%= user.name %></td>
+                    <td><%= user.email %></td>
+                    <td><%= user.role %></td>
+                    <td>
+                        <form action="/admin/promote/<%= user._id %>" method="post" style="display: inline;">
+                            <button type="submit" class="btn btn-success btn-sm" <%= user.role === 'admin' ? 'disabled' : '' %>>Promote to Admin</button>
+                        </form>
+                        <form action="/admin/demote/<%= user._id %>" method="post" style="display: inline;">
+                            <button type="submit" class="btn btn-warning btn-sm" <%= user.role === 'user' ? 'disabled' : '' %>>Demote to User</button>
+                        </form>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</div>
+
+<%- include('partials/footer') %>

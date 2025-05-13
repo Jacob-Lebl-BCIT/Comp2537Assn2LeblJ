@@ -55,6 +55,7 @@ router.post('/signupSubmit', async (req, res) => {
         req.session.email = email;
         req.session.name = name;
         req.session.userId = newUser._id;
+        req.session.role = newUser.role; // Add role to session
         req.session.cookie.maxAge = TTL * 1000;
 
         res.redirect('/members');
@@ -96,6 +97,7 @@ router.post('/loginSubmit', async (req, res) => {
             req.session.email = email;
             req.session.name = user.name;
             req.session.userID = user._id;
+            req.session.role = user.role; // Add role to session
             req.session.cookie.maxAge = TTL * 1000;
 
             console.log("User logged in:", user);
