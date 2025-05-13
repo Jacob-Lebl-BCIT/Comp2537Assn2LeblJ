@@ -18,8 +18,12 @@
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
     <br>
-    <% if (typeof messages !== 'undefined' && messages.error) { %>
-        <div id="errorMessage" class="alert alert-danger"><%= messages.error %></div>
+    <% if (typeof messages !== 'undefined' && messages.error && messages.error.length > 0) { %>
+        <div id="errorMessage" class="alert alert-danger">
+            <% messages.error.forEach(function(error) { %>
+                <p class="mb-0"><%= error %></p>
+            <% }); %>
+        </div>
     <% } %>
 </div>
 

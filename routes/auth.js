@@ -15,7 +15,8 @@ router.get('/signup', (req, res) => {
     if (req.session.authenticated) {
         return res.redirect('/members');
     } else {
-        res.render('signup', { title: 'Sign Up', messages: req.flash('error') });
+        // messages are available via res.locals.messages from middleware
+        res.render('signup', { title: 'Sign Up' });
     }
 });
 
@@ -68,7 +69,8 @@ router.get('/login', (req, res) => {
     if (req.session.authenticated) {
         return res.redirect('/members');
     } else {
-        res.render('login', { title: 'Log In', messages: req.flash('error') });
+        // messages are available via res.locals.messages from middleware
+        res.render('login', { title: 'Log In' });
     }
 });
 
