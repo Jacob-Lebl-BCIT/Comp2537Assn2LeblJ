@@ -1,0 +1,33 @@
+<%- include('partials/header', {title: 'Members Area'}) %>
+
+<div class="container mt-5">
+    <h1>Hello, <%= name %></h1>
+    <p>Welcome to the members area!</p>
+
+    <% if (typeof messages !== 'undefined' && messages.error && messages.error.length > 0) { %>
+        <div class="alert alert-danger">
+            <% messages.error.forEach(function(error) { %>
+                <p class="mb-0"><%= error %></p>
+            <% }); %>
+        </div>
+    <% } %>
+    
+    <h2>The Car Collection</h2>
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <img src="/car1.JPEG" class="img-fluid" alt="Car 1">
+        </div>
+        <div class="col-md-4 mb-3">
+            <img src="/car2.JPEG" class="img-fluid" alt="Car 2">
+        </div>
+        <div class="col-md-4 mb-3">
+            <img src="/car3.JPEG" class="img-fluid" alt="Car 3">
+        </div>
+    </div>
+    <br>
+    <form action="/logout" method="get">
+        <button type="submit" class="btn btn-primary">Logout</button>
+    </form>
+</div>
+
+<%- include('partials/footer') %>
