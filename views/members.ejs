@@ -1,4 +1,5 @@
 <%- include('partials/header', {title: 'Members Area'}) %>
+<%- include('partials/navbar', { user: user }) %> <%/* Pass user from render options */%>
 
 <div class="container mt-5">
     <h1>Hello, <%= name %></h1>
@@ -25,9 +26,6 @@
         </div>
     </div>
     <br>
-    <form action="/logout" method="get">
-        <button type="submit" class="btn btn-primary">Logout</button>
-    </form>
 </div>
 
 <%- include('partials/footer') %>

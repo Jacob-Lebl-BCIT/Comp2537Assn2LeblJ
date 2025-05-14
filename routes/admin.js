@@ -9,8 +9,11 @@ const router = express.Router();
 router.get('/admin', ensureLoggedIn, ensureAdmin, async (req, res) => {
     try {
         const users = await User.find({});
-        // messages are available via res.locals.messages from middleware in index.js
-        res.render('admin', { title: 'Admin Panel', users: users });
+        res.render('admin', { 
+            title: 'Admin Panel', 
+            users: users, 
+            user: { name: req.session.name, role: req.session.role } // Pass user object
+        });
     } catch (error) {
         console.error("Error fetching users for admin panel:", error);
         req.flash('error', 'Failed to load admin panel.');
