@@ -48,6 +48,11 @@ app.use('/', authRoutes);
 app.use('/', membersRoutes);
 app.use('/', adminRoutes); // Use admin routes
 
+// 403 route for forbidden access
+app.get('/403', (req, res) => {
+    res.status(403).render('403');
+});
+
 // 404 handle
 app.use((req, res) => {
     res.status(404).render('404');
