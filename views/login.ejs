@@ -1,26 +1,36 @@
 <%- include('partials/header', {title: 'Log In'}) %>
 
-<div class="mt-5">
-    <h1>Log In</h1>
-    <form action="/loginSubmit" method="post" novalidate>
-        <div class="mb-3">
-            <label for="email" class="form-label">Email address</label>
-            <input name="email" type="email" class="form-control" id="email" placeholder="name@example.com">
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6 col-lg-4">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h2 class="card-title text-center mb-4">Log In</h2>
+                <form action="/loginSubmit" method="post" novalidate>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email address</label>
+                        <input name="email" type="email" class="form-control" id="email" placeholder="name@example.com">
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input name="password" type="password" class="form-control" id="password" placeholder="password">
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Log In</button>
+                    </div>
+                </form>
+                <div class="text-center mt-3">
+                    <a href="/signup" class="link-secondary">Need an account? Sign up</a>
+                </div>
+                <% if (typeof messages !== 'undefined' && messages.error && messages.error.length > 0) { %>
+                    <div id="errorMessage" class="alert alert-danger mt-3">
+                        <% messages.error.forEach(function(error) { %>
+                            <p class="mb-0"><%= error %></p>
+                        <% }); %>
+                    </div>
+                <% } %>
+            </div>
         </div>
-        <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
-            <input name="password" type="password" class="form-control" id="password" placeholder="password">
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-    <br>
-    <% if (typeof messages !== 'undefined' && messages.error && messages.error.length > 0) { %>
-        <div id="errorMessage" class="alert alert-danger">
-            <% messages.error.forEach(function(error) { %>
-                <p class="mb-0"><%= error %></p>
-            <% }); %>
-        </div>
-    <% } %>
+    </div>
 </div>
 
 <%- include('partials/footer') %>
