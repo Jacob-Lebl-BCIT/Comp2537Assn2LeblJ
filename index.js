@@ -50,7 +50,7 @@ app.use('/', adminRoutes); // Use admin routes
 
 // 404 handle
 app.use((req, res) => {
-    res.status(404).send('404 Not Found');
+    res.status(404).render('404');
 })
 
 app.listen(port, () => {
